@@ -6,7 +6,7 @@ function calculateWait(tiles) {
     // 牌を1枚増やして待ちになるかチェックする
     tiles[i]++;
     if (isWaiting(tiles)) {
-      const waitTile = (Math.floor(i / 9) + 1) + ((i % 9) + 1) + ["m", "p", "s"][Math.floor(i / 9)];
+      const waitTile = ((i % 9) + 1) + ["m", "p", "s", "z"][Math.floor(i / 9)];
       waits.push(waitTile);
     }
     tiles[i]--;
