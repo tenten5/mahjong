@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Mahjong Wait Quiz</title>
+  </head>
+  <body>
+    <h1>Mahjong Wait Quiz</h1>
+    <div>
+      <label>手牌：</label>
+      <input id="tiles-input" type="text">
+      <button id="calculate-button">計算</button>
+    </div>
+    <div id="result"></div>
+    <script src="calculate-wait.js"></script>
+    <script>
+      const calculateButton = document.getElementById("calculate-button");
+      const tilesInput = document.getElementById("tiles-input");
+      const resultDiv = document.getElementById("result");
+      calculateButton.addEventListener("click", () => {
+        const tiles = parseTiles(tilesInput.value);
+        if (tiles.length !== 13) {
+          alert("手牌が不正です。");
+          return;
+        }
+        const waits = calculateWait(tiles);
+        if (waits.length === 0) {
+          resultDiv.textContent = "聴牌していません。";
+        } else {
+          resultDiv.textContent = `聴牌待ち：${waits.join(", ")}`;
+        }
+      });
+
+      function parseTiles(tilesText) {
+        const tiles = new Array(34).fill(0);
+        for (let i = 0; i < tilesText.length; i += 2) {
+          const num = Number(tilesText[i]);
+          const suit = tilesText[i + 1];
+          let index;
+          if (suit === "m") {
+            index = num - 1;
+          } else if (suit === "p") {
+            index = 9 + num - 1;
+          } else if (suit === "s") {
+            index = 18 + num - 1;
+          } else if (suit === "z") {
+            index = 27 + ["E", "S", "W", "N", "P", "F", "C"].indexOf(num);
+          } else {
+            return [];
+          }
+          tiles[index]++;
+        }
+        return tiles;
+      }
+    </script>
+  </body>
+</html>
