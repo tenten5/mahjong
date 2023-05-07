@@ -4,17 +4,25 @@
     <meta charset="UTF-8">
     <title>Mahjong Wait Quiz</title>
     <script src="mahjong.js"></script>
+    <style>
+      .tile {
+        width: 66px;
+        height: 90px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        display: inline-block;
+        margin: 1px;
+      }
+    </style>
   </head>
   <body>
     <h1>Mahjong Wait Quiz</h1>
-    <div class="result">
-      <p>例: 2m3m4m5m6m6m6m4p5p6p6s7s8s </p>
-      <p>例: 2m3m4m5m6m7m1p2p3p1z1z1z2z </p>
-    </div>
+    <div id="cr">画像は https://majandofu.com/mahjong-images より借りてます</div>
+    <p>
+    <div id="hand"></div>
     <div>
-      <label>手牌：</label>
-      <input id="tiles-input" type="text" size="100">
-      <button id="calculate-button">計算</button>
+      <input id="tiles-input" type="hidden" size="100">
+      <button id="calculate-button">待ち表示！</button>
     </div>
     <div id="result"></div>
     <script>
@@ -22,7 +30,36 @@
       const tilesInput = document.getElementById("tiles-input");
       const resultDiv = document.getElementById("result");
 
-      tilesInput.value = tilesToString(generateRandomTenpai());
+      haishi = generateRandomTenpai();
+
+      const tileImages = [
+        "man1-66-90-l.png", "man2-66-90-l.png", "man3-66-90-l.png", "man4-66-90-l.png", "man5-66-90-l.png", "man6-66-90-l.png", "man7-66-90-l.png", "man8-66-90-l.png", "man9-66-90-l.png",
+        "pin1-66-90-l.png", "pin2-66-90-l.png", "pin3-66-90-l.png", "pin4-66-90-l.png", "pin5-66-90-l.png", "pin6-66-90-l.png", "pin7-66-90-l.png", "pin8-66-90-l.png", "pin9-66-90-l.png",
+        "sou1-66-90-l.png", "sou2-66-90-l.png", "sou3-66-90-l.png", "sou4-66-90-l.png", "sou5-66-90-l.png", "sou6-66-90-l.png", "sou7-66-90-l.png", "sou8-66-90-l.png", "sou9-66-90-l.png",
+        "ji1-66-90-l.png", "ji2-66-90-l.png", "ji3-66-90-l.png", "ji4-66-90-l.png", "ji5-66-90-l.png", "ji6-66-90-l.png", "ji7-66-90-l.png"
+      ];
+
+      function tileToImageSrc(tile) {
+        return "https://majandofu.com/wp-content/uploads/2014/09/" + tileImages[tile] ;
+      }
+
+      function renderHand(tiles) {
+        const handDiv = document.getElementById("hand");
+        handDiv.innerHTML = "";
+        for (let i = 0; i < tiles.length; i++) {
+          const tile = tiles[i];
+          for (let j = 0; j < tile; j++) {
+            const tileDiv = document.createElement("div");
+            tileDiv.classList.add("tile");
+            tileDiv.style.backgroundImage = "url('" + tileToImageSrc(i) + "')";
+            handDiv.appendChild(tileDiv);
+          }
+        }
+      }
+      
+      renderHand(haishi);
+      
+      tilesInput.value = tilesToString(haishi);
 
       calculateButton.addEventListener("click", () => {
         const tiles = parseTiles(tilesInput.value);
