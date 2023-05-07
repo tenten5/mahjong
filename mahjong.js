@@ -3,7 +3,7 @@ function calculateWait(tiles) {
   for (let i = 0; i < 34; i++) {
     if (tiles[i] >= 4) continue; // 4枚持ちの牌は待ちにならない
 
-    // 牌を1枚増やして待ちになるかチェックする
+    // 牌を1枚増やしてアガリ形になるかチェックする
     tiles[i]++;
     if (isWaiting(tiles)) {
       const waitTile = ((i % 9) + 1) + ["m", "p", "s", "z"][Math.floor(i / 9)];
@@ -15,6 +15,7 @@ function calculateWait(tiles) {
 }
 
 function isWaiting(tiles) {
+  // ４メンツ＋１雀頭
   for (let i = 0; i < 34; i++) {
     if (tiles[i] >= 2) { // 雀頭がある場合
       const copiedTiles = [...tiles];
@@ -24,7 +25,29 @@ function isWaiting(tiles) {
       }
     }
   }
+  // 七対子
+  let toitsu = 0;
+  for (let i = 0; i < 34; i++) {
+    if (tiles[i] === 2) { 
+      toitsu++;
+    }
+  }
+  if( toitsu === 7 ){
+    return true;
+  }
+  // 国士無双
+  const kokushiSet = new Set([0, 8, 9, 17, 18, 26, 27, 28, 29, 30, 31, 32, 33]);
+  let count = 0;
+  for (const kokushi of kokushiSet) {
+    if (tiles[kokushi] === 0) { 
+      return false;
+    }
+    count = count + tiles[kokushi];
+  }
+  if( count === 14 ) return true;
+
   return false;
+
 }
 
 function isMentsu(tiles, numMentsu) {
