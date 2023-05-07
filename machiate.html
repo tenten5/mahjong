@@ -13,15 +13,17 @@
     </div>
     <div>
       <label>手牌：</label>
-      <input id="tiles-input" type="text">
+      <input id="tiles-input" type="text" size="100">
       <button id="calculate-button">計算</button>
     </div>
     <div id="result"></div>
-    <script src="calculate-wait.js"></script>
     <script>
       const calculateButton = document.getElementById("calculate-button");
       const tilesInput = document.getElementById("tiles-input");
       const resultDiv = document.getElementById("result");
+
+      tilesInput.value = tilesToString(generateRandomTenpai());
+
       calculateButton.addEventListener("click", () => {
         const tiles = parseTiles(tilesInput.value);
         let totalTiles = tiles.reduce((sum, tile) => sum + tile, 0);
