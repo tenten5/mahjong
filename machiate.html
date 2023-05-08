@@ -13,8 +13,6 @@
         display: inline-block;
         margin: 1px;
       }
-    </style>
-    <style>
       .manzu {
         display: inline-block;
         width: 66px;
@@ -24,16 +22,18 @@
         background-size: 100% 100%;
         cursor: pointer;
       }
-
       .selected {
         border: 2px solid red;
         margin: 3px;
+      }
+      .point {
+        display: inline;
       }
     </style>
   </head>
   <body>
     <h1>Mahjong Wait Quiz</h1>
-    <div id="cr">画像は https://majandofu.com/mahjong-images より借りてます</div>
+    <h2 id="qnum">第１問</h2>
     <p>テンパイ牌姿</p>
     <div id="hand"></div>
     <div>
@@ -54,13 +54,19 @@
       <button id="calculate-button">答え合わせ！</button>
       <button id="next-button">次の問題！</button>
     </div>
-    <div id="result"></div>
+    <h2><div id="result"></div></h2>
+    <p></p>
+    <h2><div id="point" class="point">0</div> Point</h2>
+    <div id="cr">画像は https://majandofu.com/mahjong-images より借りてます</div>
     <script>
       const calculateButton = document.getElementById("calculate-button");
       const tilesInput = document.getElementById("tiles-input");
       const tilesOutput = document.getElementById("tiles-output");
       const resultDiv = document.getElementById("result");
       const nextButton = document.getElementById("next-button");
+      const qnumDiv = document.getElementById("qnum");
+      let qnum = 1;
+      let startTime = new Date().getTime();
 
       const tileImages = [
         "man1-66-90-l.png", "man2-66-90-l.png", "man3-66-90-l.png", "man4-66-90-l.png", "man5-66-90-l.png", "man6-66-90-l.png", "man7-66-90-l.png", "man8-66-90-l.png", "man9-66-90-l.png",
@@ -89,11 +95,12 @@
       
       function renderMachi(){
         for (let j = 0; j < 9; j++) {
-            const tileDiv = document.getElementById("manzu-" + (j+1) + "m");
-            tileDiv.style.backgroundImage = "url('" + tileToImageSrc(j) + "')";
+          const tileDiv = document.getElementById("manzu-" + (j+1) + "m");
+          tileDiv.style.backgroundImage = "url('" + tileToImageSrc(j) + "')";
         }
       }
 
+      // 答えボタン押下
       calculateButton.addEventListener("click", () => {
         const tiles = parseTiles(tilesInput.value);
         let totalTiles = tiles.reduce((sum, tile) => sum + tile, 0);
@@ -104,11 +111,17 @@
         const waits = calculateWait(tiles);
         if (waits.join("") === tilesOutput.value) {
           resultDiv.textContent = "正解！";
+
+          // 点数は待ちの数と回答にかかった時間から計算
+          point.innerHTML = Math.floor(Number(point.innerHTML) + (10 + waits.length) * 100000 / (new Date().getTime() - startTime));
         } else {
           resultDiv.textContent = `間違い！ 聴牌待ち：${waits.join(", ")}`;
+          point.innerHTML = Number(point.innerHTML) - 100;
         }
+
         calculateButton.disabled = true;
-        nextButton.disabled = false;
+        // 10問で終わり
+        if( qnum <= 10 ) nextButton.disabled = false;
       });
 
       function parseTiles(tilesText) {
@@ -141,6 +154,8 @@
         tilesInput.value = tilesToString(haishi);
         calculateButton.disabled = false;
         nextButton.disabled = true;
+        qnumDiv.innerHTML = "第" + qnum++ + "問";
+        startTime = new Date().getTime();
       }
 
       nextButton.addEventListener("click", () => {
