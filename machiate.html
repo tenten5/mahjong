@@ -21,13 +21,15 @@
     <p>
     <div id="hand"></div>
     <div>
-      <input id="tiles-input" type="hidden" size="100">
-      <button id="calculate-button">待ち表示！</button>
+      <input id="tiles-input" placeholder="テンパイ牌姿入力" type="hidden" size="100">
+      <input id="tiles-output" placeholder="待ちを入力(例:3m6m)" type="input" size="20">
+      <button id="calculate-button">答え合わせ！</button>
     </div>
     <div id="result"></div>
     <script>
       const calculateButton = document.getElementById("calculate-button");
       const tilesInput = document.getElementById("tiles-input");
+      const tilesOutput = document.getElementById("tiles-output");
       const resultDiv = document.getElementById("result");
 
       haishi = generateRandomTenpai();
@@ -69,10 +71,10 @@
           return;
         }
         const waits = calculateWait(tiles);
-        if (waits.length === 0) {
-          resultDiv.textContent = "聴牌していません。";
+        if (waits.join("") === tilesOutput.value) {
+          resultDiv.textContent = "正解！";
         } else {
-          resultDiv.textContent = `聴牌待ち：${waits.join(", ")}`;
+          resultDiv.textContent = `間違い！ 聴牌待ち：${waits.join(", ")}`;
         }
       });
 
