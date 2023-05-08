@@ -4,7 +4,7 @@
 
 ## ページ
 
-https://tenten5.github.io/mahjong/machiate.html
+[https://tenten5.github.io/mahjong/machiate.html](https://tenten5.github.io/mahjong/machiate.html)
 
 ## Chatgpt のログ
 
@@ -12,10 +12,8 @@ https://chat.openai.com/c/33b2a4de-9f11-4877-9df5-c348ff187b0e
 
 ## 遊び方など
 
-答えの表記方法
+待ちを選択から、待ちだと思うものを選択して「答え合わせ！」ボタンを押してください。
+正解するとポイントがもらえます。不正解だとポイントが減ります。早く正解するとたくさんポイントがもらえます。
 
-* 萬子: 半角数字 + m → 1m・2m
-* 筒子: 半角数字 + p → 3p・4p
-* 索子: 半角数字 + s → 5s・6s
-* 風牌: 1z・2z・3z・4z
-* 三元牌: 5z・6z・7z
+「次の問題！」を押すと次の問題が出ます。10問で終わりです。
+
