@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>マンズ選択</title>
+	<style>
+		.manzu {
+			display: inline-block;
+			width: 50px;
+			height: 75px;
+			margin: 5px;
+			background-repeat: no-repeat;
+			background-size: 100% 100%;
+			cursor: pointer;
+		}
+
+		.selected {
+			background-color: yellow;
+		}
+	</style>
+</head>
+<body>
+	<div id="manzu">
+		<div class="manzu" id="manzu-1m" style="background-image: url('1m.png');"></div>
+		<div class="manzu" id="manzu-2m" style="background-image: url('2m.png');"></div>
+		<div class="manzu" id="manzu-3m" style="background-image: url('3m.png');"></div>
+		<div class="manzu" id="manzu-4m" style="background-image: url('4m.png');"></div>
+		<div class="manzu" id="manzu-5m" style="background-image: url('5m.png');"></div>
+		<div class="manzu" id="manzu-6m" style="background-image: url('6m.png');"></div>
+		<div class="manzu" id="manzu-7m" style="background-image: url('7m.png');"></div>
+		<div class="manzu" id="manzu-8m" style="background-image: url('8m.png');"></div>
+		<div class="manzu" id="manzu-9m" style="background-image: url('9m.png');"></div>
+	</div>
+
+	<div>
+		選択されたマンズ: <span id="selected"></span>
+	</div>
+
+	<script>
+		// マンズの画像をクリックしたときに呼び出される関数
+		function selectManzu(event) {
+			// クリックされたマンズのidを取得
+			var manzuId = event.target.id;
+
+			// 選択されたマンズの配列を取得
+			var selectedManzu = document.selectedManzu || [];
+
+			// 選択されたマンズに追加するか、すでに選択されていたら削除する
+			if (selectedManzu.includes(manzuId)) {
+				selectedManzu.splice(selectedManzu.indexOf(manzuId), 1);
+			} else {
+				selectedManzu.push(manzuId);
+			}
+
+			// 選択されたマンズのidに対応する要素にselectedクラスを付ける
+			event.target.classList.toggle("selected");
+
+			// 選択されたマンズの表記を更新する
+			var selectedElement = document.getElementById("selected");
+			selectedElement.innerHTML = selectedManzu.sort().map(function(manzuId) {
+                return manzuId.replace("manzu-", "");
+            }).join("");
+		
+            // 選択されたマンズの配列を保存する
+            document.selectedManzu = selectedManzu;
+        }
+
+        // マンズの画像にクリックイベントを設定する
+        var manzuElements = document.querySelectorAll(".manzu");
+        for (var i = 0; i < manzuElements.length; i++) {
+            manzuElements[i].addEventListener("click", selectManzu);
+    	}
+    </script>
+</body>
+</html>
