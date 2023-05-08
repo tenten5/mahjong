@@ -52,6 +52,7 @@
         <div class="manzu" id="manzu-9m" style="background-image: url('9m.png');"></div>
       </div>
       <button id="calculate-button">答え合わせ！</button>
+      <button id="next-button">次の問題！</button>
     </div>
     <div id="result"></div>
     <script>
@@ -59,8 +60,7 @@
       const tilesInput = document.getElementById("tiles-input");
       const tilesOutput = document.getElementById("tiles-output");
       const resultDiv = document.getElementById("result");
-
-      haishi = generateRandomTenpai();
+      const nextButton = document.getElementById("next-button");
 
       const tileImages = [
         "man1-66-90-l.png", "man2-66-90-l.png", "man3-66-90-l.png", "man4-66-90-l.png", "man5-66-90-l.png", "man6-66-90-l.png", "man7-66-90-l.png", "man8-66-90-l.png", "man9-66-90-l.png",
@@ -93,10 +93,6 @@
             tileDiv.style.backgroundImage = "url('" + tileToImageSrc(j) + "')";
         }
       }
-      renderHand(haishi);
-      renderMachi();
-      
-      tilesInput.value = tilesToString(haishi);
 
       calculateButton.addEventListener("click", () => {
         const tiles = parseTiles(tilesInput.value);
@@ -111,6 +107,8 @@
         } else {
           resultDiv.textContent = `間違い！ 聴牌待ち：${waits.join(", ")}`;
         }
+        calculateButton.disabled = true;
+        nextButton.disabled = false;
       });
 
       function parseTiles(tilesText) {
@@ -134,6 +132,22 @@
         }
         return tiles;
       }
+
+      function startnewquiz(){
+        haishi = generateRandomTenpai();
+        renderHand(haishi);
+        renderMachi();
+        
+        tilesInput.value = tilesToString(haishi);
+        calculateButton.disabled = false;
+        nextButton.disabled = true;
+      }
+
+      nextButton.addEventListener("click", () => {
+        startnewquiz();
+      })
+
+      startnewquiz();
     </script>
     <script>
       // マンズの画像をクリックしたときに呼び出される関数
